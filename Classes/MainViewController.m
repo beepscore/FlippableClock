@@ -20,14 +20,44 @@
     return self;
 }
 
+- (void)dealloc {
+    [clockPrefs release];
+    [prefsFilePath release];
+    
+    [super dealloc];
+}
 
-/*
- // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
- - (void)viewDidLoad {
- [super viewDidLoad];
- }
- */
+- (void)initPrefsFilePath {
+    NSString *documentsDirectory = [NSHomeDirectory() stringByAppendingPathComponent:@"Documents"];
+    prefsFilePath = [documentsDirectory stringByAppendingPathComponent:@"flippingprefs.plist"];
+    [prefsFilePath retain];
+}
 
+- (void)loadPrefs {
+    if (nil == prefsFilePath)
+        [self initPrefsFilePath];
+    if ([[NSFileManager defaultManager] fileExistsAtPath:prefsFilePath]) {
+        clockPrefs = [[NSMutableDictionary alloc] initWithContentsOfFile:prefsFilePath];
+    } else {
+        clockPrefs = [[NSMutableDictionary alloc] initWithCapacity:2];
+        [clockPrefs setObject:DEFAULT_TIME_ZONE_PREF forKey:TIME_ZONE_PREF_KEY];
+        [clockPrefs setObject:DEFAULT_TWENTY_FOUR_HOUR_PREF forKey:TWENTY_FOUR_HOUR_PREF_KEY];            
+    }
+    NSString *prefTimeZone = [clockPrefs objectForKey:TIME_ZONE_PREF_KEY];
+    BOOL uses24Hour = [(NSString*)
+                       [clockPrefs objectForKey:TWENTY_FOUR_HOUR_PREF_KEY] boolValue];
+    [self setClockToTimeZoneName: prefTimeZone uses24Hour: uses24Hour];
+}
+
+- (void)setClockToTimeZoneName: (NSString*) tz uses24Hour: (BOOL) u24h {
+    
+}
+
+// Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    [self loadPrefs];
+}
 
 /*
  // Override to allow orientations other than the default portrait orientation.
@@ -75,11 +105,6 @@
 - (void)viewDidUnload {
 	// Release any retained subviews of the main view.
 	// e.g. self.myOutlet = nil;
-}
-
-
-- (void)dealloc {
-    [super dealloc];
 }
 
 

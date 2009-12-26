@@ -8,9 +8,20 @@
 
 #import "FlipsideViewController.h"
 
+#define TWENTY_FOUR_HOUR_PREF_KEY @"24HourDisplay"
+#define TIME_ZONE_PREF_KEY @"TimeZone"
+#define DEFAULT_TWENTY_FOUR_HOUR_PREF @"NO"
+#define DEFAULT_TIME_ZONE_PREF @"America/Detroit"
+
 @interface MainViewController : UIViewController <FlipsideViewControllerDelegate> {
+    NSMutableDictionary *clockPrefs;
+    NSString *prefsFilePath;
 }
 
 - (IBAction)showInfo;
+
+- (void)initPrefsFilePath;
+- (void)loadPrefs;
+- (void)setClockToTimeZoneName: (NSString*) tz uses24Hour: (BOOL) u24h;
 
 @end

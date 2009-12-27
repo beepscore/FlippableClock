@@ -62,7 +62,14 @@ numberOfRowsInComponent:(NSInteger)component {
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor viewFlipsideBackgroundColor];
     [self loadTimeZoneNames];
-    
+    // init to values from main view
+    MainViewController *mainVC = (MainViewController*)delegate;
+    NSString *timeZone = [mainVC.clockPrefs objectForKey:TIME_ZONE_PREF_KEY];
+    NSString *twentyFourHourPref = [mainVC.clockPrefs objectForKey:TWENTY_FOUR_HOUR_PREF_KEY];
+    [timeZonePicker selectRow:[timeZoneNames indexOfObject:timeZone]
+                  inComponent:0
+                     animated:NO];
+    twentyFourHourSwitch.on = [twentyFourHourPref boolValue];
 }
 
 

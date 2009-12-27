@@ -79,7 +79,9 @@
 }
      
 - (void)updateClockView {
-    if (NULL == clockFormatter) {
+    //  Dudney book errata one comment says use nil not NULL
+    //    if (NULL == clockFormatter) {
+    if (nil == clockFormatter) {
         timeLabel.text = @"";
         timeZoneLabel.text = @"";
     }

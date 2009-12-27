@@ -12,6 +12,13 @@
 
 @implementation MainViewController
 
+#pragma mark -
+#pragma mark properties
+
+@synthesize timeLabel;
+@synthesize timeZoneLabel;
+#pragma mark -
+#pragma mark initializers / destructors
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
     if (self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil]) {
@@ -21,8 +28,12 @@
 }
 
 - (void)dealloc {
-    [clockPrefs release];
-    [prefsFilePath release];
+    [clockPrefs release], clockPrefs = nil;
+    [prefsFilePath release], prefsFilePath = nil;
+    self.timeLabel = nil;
+    self.timeZoneLabel = nil;
+    [timeZoneName release], timeZoneName = nil;
+    [clockFormatter release], clockFormatter = nil;
     
     [super dealloc];
 }
@@ -50,13 +61,37 @@
 }
 
 - (void)setClockToTimeZoneName: (NSString*) tz uses24Hour: (BOOL) u24h {
-    
+    [timeZoneName release];
+    [tz retain];
+    timeZoneName = tz;
+    // set time formatter with 24 hour preference and time zone
+    if (nil == clockFormatter) {
+        clockFormatter = [[NSDateFormatter alloc] init];
+    }
+    // see formats at
+    // http://unicode.org/reports/tr35/tr35-4.html#Date_Format_Patterns
+    [clockFormatter setTimeZone:[NSTimeZone timeZoneWithName:tz]];
+    if (u24h)
+        [clockFormatter setDateFormat:@"HH:mm:ss"];
+    else
+        [clockFormatter setDateFormat:@"h:mm:ss a"];
+}
+     
+- (void)updateClockView {
+    if (NULL == clockFormatter) {
+        timeLabel.text = @"";
+        timeZoneLabel.text = @"";
+    }
+    NSDate *dateNow = [NSDate date];
+    timeLabel.text = [clockFormatter stringFromDate:dateNow];
+    timeZoneLabel.text = timeZoneName;
 }
 
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self loadPrefs];
+    [self updateClockView];
 }
 
 /*

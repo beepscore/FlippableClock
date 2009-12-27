@@ -16,12 +16,23 @@
 @interface MainViewController : UIViewController <FlipsideViewControllerDelegate> {
     NSMutableDictionary *clockPrefs;
     NSString *prefsFilePath;
+    UILabel *timeLabel;
+    UILabel *timeZoneLabel;
+    
+    NSString *timeZoneName;
+    NSDateFormatter *clockFormatter;
 }
+
+#pragma mark -
+#pragma mark properties
+@property(nonatomic,retain)IBOutlet UILabel *timeLabel;
+@property(nonatomic,retain)IBOutlet UILabel *timeZoneLabel;
 
 - (IBAction)showInfo;
 
 - (void)initPrefsFilePath;
 - (void)loadPrefs;
 - (void)setClockToTimeZoneName: (NSString*) tz uses24Hour: (BOOL) u24h;
+- (void)updateClockView;
 
 @end

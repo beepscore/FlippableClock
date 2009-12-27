@@ -14,9 +14,10 @@
 
 #pragma mark -
 #pragma mark properties
-
+@synthesize clockPrefs;
 @synthesize timeLabel;
 @synthesize timeZoneLabel;
+
 #pragma mark -
 #pragma mark initializers / destructors
 
@@ -28,10 +29,10 @@
 }
 
 - (void)dealloc {
-    [clockPrefs release], clockPrefs = nil;
-    [prefsFilePath release], prefsFilePath = nil;
+    self.clockPrefs = nil;
     self.timeLabel = nil;
     self.timeZoneLabel = nil;
+    [prefsFilePath release], prefsFilePath = nil;
     [timeZoneName release], timeZoneName = nil;
     [clockFormatter release], clockFormatter = nil;
     

@@ -15,16 +15,17 @@
 
 @interface MainViewController : UIViewController <FlipsideViewControllerDelegate> {
     NSMutableDictionary *clockPrefs;
-    NSString *prefsFilePath;
     UILabel *timeLabel;
     UILabel *timeZoneLabel;
     
+    NSString *prefsFilePath;
     NSString *timeZoneName;
     NSDateFormatter *clockFormatter;
 }
 
 #pragma mark -
 #pragma mark properties
+@property(nonatomic,retain)NSMutableDictionary *clockPrefs;
 @property(nonatomic,retain)IBOutlet UILabel *timeLabel;
 @property(nonatomic,retain)IBOutlet UILabel *timeZoneLabel;
 

@@ -7,16 +7,62 @@
 //
 
 #import "FlipsideViewController.h"
+#import "MainViewController.h"
 
 
 @implementation FlipsideViewController
 
+#pragma mark -
+#pragma mark properties
 @synthesize delegate;
+@synthesize twentyFourHourSwitch;
+@synthesize timeZonePicker;
 
+#pragma mark -
+#pragma mark initializers / destructors
+- (void)dealloc {
+    self.twentyFourHourSwitch = nil;
+    self.timeZonePicker = nil;
+    [timeZoneNames release], timeZoneNames = nil;
+    
+    [super dealloc];
+}
+
+
+- (void)loadTimeZoneNames {
+    if (timeZoneNames)
+        return;
+    NSArray *unsortedTimeZoneNames = [NSTimeZone knownTimeZoneNames];
+    timeZoneNames = [unsortedTimeZoneNames sortedArrayUsingSelector:@selector(caseInsensitiveCompare:)];
+    [timeZoneNames retain];
+}
+
+#pragma mark -
+#pragma mark Picker delegate methods
+- (NSInteger)pickerView:(UIPickerView *)pickerView 
+numberOfRowsInComponent:(NSInteger)component {
+    return [timeZoneNames count];
+}
+
+
+- (NSInteger)numberOfComponentsInPickerView:(UIPickerView *)pickerView {
+    return 1;
+}
+
+- (NSString *)pickerView:(UIPickerView *)pickerView
+            titleForRow:(NSInteger)row
+           forComponent:(NSInteger)component {
+    return (NSString*) [timeZoneNames objectAtIndex:row];
+}
+
+
+#pragma mark -
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.view.backgroundColor = [UIColor viewFlipsideBackgroundColor];      
+    self.view.backgroundColor = [UIColor viewFlipsideBackgroundColor];
+    [self loadTimeZoneNames];
+    
 }
 
 
@@ -40,15 +86,10 @@
 	// Release any cached data, images, etc that aren't in use.
 }
 
+
 - (void)viewDidUnload {
 	// Release any retained subviews of the main view.
 	// e.g. self.myOutlet = nil;
 }
-
-
-- (void)dealloc {
-    [super dealloc];
-}
-
 
 @end

@@ -9,13 +9,23 @@
 @protocol FlipsideViewControllerDelegate;
 
 
-@interface FlipsideViewController : UIViewController {
+@interface FlipsideViewController : UIViewController 
+        <UIPickerViewDataSource, UIPickerViewDelegate> {
 	id <FlipsideViewControllerDelegate> delegate;
+    UISwitch *twentyFourHourSwitch;
+    UIPickerView *timeZonePicker;
+    NSArray *timeZoneNames;
 }
 
+#pragma mark -
+#pragma mark properties
 @property (nonatomic, assign) id <FlipsideViewControllerDelegate> delegate;
-- (IBAction)done;
+@property(nonatomic,retain)IBOutlet UISwitch *twentyFourHourSwitch;
+@property(nonatomic,retain)IBOutlet UIPickerView *timeZonePicker;
 
+
+- (IBAction)done;
+- (void)loadTimeZoneNames;
 @end
 
 

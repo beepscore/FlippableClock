@@ -120,8 +120,11 @@
     [self startClock];
 }
 
-// To avoid compiler warning, must declare savePrefs method in header or else
-// must appear in .m before it's called by another method in .m file.
+// To avoid compiler warning, must declare a method in .h header
+// or the method must be defined in .m before it's called by another method in the .m file.
+// Objective C does not support "private" methods.
+// However, if a method is used only inside a class, 
+// we can avoid declaring it in the header, and so avoid exposing/advertising its existence.
 - (void)savePrefs {
     [clockPrefs writeToFile:prefsFilePath atomically:YES];
 }

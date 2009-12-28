@@ -61,6 +61,7 @@
     [self setClockToTimeZoneName: prefTimeZone uses24Hour: uses24Hour];
 }
 
+#pragma mark -
 - (void)setClockToTimeZoneName: (NSString*) tz uses24Hour: (BOOL) u24h {
     [timeZoneName release];
     [tz retain];
@@ -97,18 +98,28 @@
     [self updateClockView];
 }
 
-/*
- // Override to allow orientations other than the default portrait orientation.
- - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
- // Return YES for supported orientations
- return (interfaceOrientation == UIInterfaceOrientationPortrait);
- }
- */
 
-
+#pragma mark delegate method
+// <FlipsideViewControllerDelegate> protocol requires this method
 - (void)flipsideViewControllerDidFinish:(FlipsideViewController *)controller {
+    timeZoneName = [controller selectedTimeZone];
+    BOOL uses24Hour = [controller uses24Hour];
+    NSString *selected24HourDisplayS = uses24Hour ? @"YES" : @"NO";
+    [clockPrefs setObject:timeZoneName forKey:TIME_ZONE_PREF_KEY];
+    [clockPrefs setObject:selected24HourDisplayS forKey:TWENTY_FOUR_HOUR_PREF_KEY];
+    // save prefs to documents folder
+    [self savePrefs];
     
+    // update display to changed prefs
+    [self setClockToTimeZoneName:timeZoneName uses24Hour:uses24Hour];
+    [self updateClockView];
+    
+    // from template
 	[self dismissModalViewControllerAnimated:YES];
+}
+#pragma mark -
+- (void)savePrefs {
+    [clockPrefs writeToFile:prefsFilePath atomically:YES];
 }
 
 
@@ -122,7 +133,6 @@
 	
 	[controller release];
 }
-
 
 
 /*

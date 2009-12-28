@@ -23,9 +23,12 @@
 @property(nonatomic,retain)IBOutlet UISwitch *twentyFourHourSwitch;
 @property(nonatomic,retain)IBOutlet UIPickerView *timeZonePicker;
 
+- (NSString*)selectedTimeZone;
+- (BOOL)uses24Hour;
 
 - (IBAction)done;
 - (void)loadTimeZoneNames;
+
 @end
 
 

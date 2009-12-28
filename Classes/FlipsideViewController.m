@@ -19,6 +19,18 @@
 @synthesize timeZonePicker;
 
 #pragma mark -
+#pragma mark getter methods
+- (NSString*)selectedTimeZone {
+    return [timeZoneNames objectAtIndex:[timeZonePicker selectedRowInComponent:0]];
+}
+
+
+- (BOOL)uses24Hour {
+    return twentyFourHourSwitch.on;
+}
+
+
+#pragma mark -
 #pragma mark initializers / destructors
 - (void)dealloc {
     self.twentyFourHourSwitch = nil;
@@ -36,6 +48,7 @@
     timeZoneNames = [unsortedTimeZoneNames sortedArrayUsingSelector:@selector(caseInsensitiveCompare:)];
     [timeZoneNames retain];
 }
+
 
 #pragma mark -
 #pragma mark Picker delegate methods

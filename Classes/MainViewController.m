@@ -36,6 +36,7 @@
     [prefsFilePath release], prefsFilePath = nil;
     [timeZoneName release], timeZoneName = nil;
     [clockFormatter release], clockFormatter = nil;
+    [clockViewUpdateTimer release], clockViewUpdateTimer = nil;
     
     [super dealloc];
 }
@@ -102,11 +103,13 @@
     // do one up-front refresh
     [self updateClockView];
     // now set up timer to repeatedly call updateClockView
+    // ????: Need to retain and release this?
     clockViewUpdateTimer = [NSTimer scheduledTimerWithTimeInterval:0.2
                                                             target:self
                                                           selector:@selector (updateClockView)
                                                           userInfo:NULL
                                                            repeats:YES];
+    [clockViewUpdateTimer retain];
 }
 
 

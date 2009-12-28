@@ -21,6 +21,7 @@
     NSString *prefsFilePath;
     NSString *timeZoneName;
     NSDateFormatter *clockFormatter;
+    NSTimer *clockViewUpdateTimer;
 }
 
 #pragma mark -
@@ -35,6 +36,5 @@
 - (void)loadPrefs;
 - (void)setClockToTimeZoneName: (NSString*) tz uses24Hour: (BOOL) u24h;
 - (void)updateClockView;
-- (void)savePrefs;
 
 @end

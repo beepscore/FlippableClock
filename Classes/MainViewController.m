@@ -28,6 +28,7 @@
     return self;
 }
 
+
 - (void)dealloc {
     self.clockPrefs = nil;
     self.timeLabel = nil;
@@ -39,11 +40,13 @@
     [super dealloc];
 }
 
+
 - (void)initPrefsFilePath {
     NSString *documentsDirectory = [NSHomeDirectory() stringByAppendingPathComponent:@"Documents"];
     prefsFilePath = [documentsDirectory stringByAppendingPathComponent:@"flippingprefs.plist"];
     [prefsFilePath retain];
 }
+
 
 - (void)loadPrefs {
     if (nil == prefsFilePath)
@@ -60,6 +63,7 @@
                        [clockPrefs objectForKey:TWENTY_FOUR_HOUR_PREF_KEY] boolValue];
     [self setClockToTimeZoneName: prefTimeZone uses24Hour: uses24Hour];
 }
+
 
 #pragma mark -
 - (void)setClockToTimeZoneName: (NSString*) tz uses24Hour: (BOOL) u24h {
@@ -78,7 +82,8 @@
     else
         [clockFormatter setDateFormat:@"h:mm:ss a"];
 }
-     
+
+
 - (void)updateClockView {
     //  Dudney book errata one comment says use nil not NULL
     //    if (NULL == clockFormatter) {
@@ -91,11 +96,31 @@
     timeZoneLabel.text = timeZoneName;
 }
 
+
+- (void)startClock {
+    // since timer's first callback will occur after interval,
+    // do one up-front refresh
+    [self updateClockView];
+    // now set up timer to repeatedly call updateClockView
+    clockViewUpdateTimer = [NSTimer scheduledTimerWithTimeInterval:0.2
+                                                            target:self
+                                                          selector:@selector (updateClockView)
+                                                          userInfo:NULL
+                                                           repeats:YES];
+}
+
+
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self loadPrefs];
-    [self updateClockView];
+    [self startClock];
+}
+
+// To avoid compiler warning, must declare savePrefs method in header or else
+// must appear in .m before it's called by another method in .m file.
+- (void)savePrefs {
+    [clockPrefs writeToFile:prefsFilePath atomically:YES];
 }
 
 
@@ -118,11 +143,6 @@
 	[self dismissModalViewControllerAnimated:YES];
 }
 #pragma mark -
-- (void)savePrefs {
-    [clockPrefs writeToFile:prefsFilePath atomically:YES];
-}
-
-
 - (IBAction)showInfo {    
 	
 	FlipsideViewController *controller = [[FlipsideViewController alloc] initWithNibName:@"FlipsideView" bundle:nil];
@@ -149,6 +169,7 @@
 	
 	// Release any cached data, images, etc that aren't in use.
 }
+
 
 - (void)viewDidUnload {
 	// Release any retained subviews of the main view.

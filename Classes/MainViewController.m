@@ -30,9 +30,9 @@
 
 
 - (void)dealloc {
-    self.clockPrefs = nil;
-    self.timeLabel = nil;
-    self.timeZoneLabel = nil;
+    [clockPrefs release], clockPrefs = nil;
+    [timeLabel release], timeLabel = nil;
+    [timeZoneLabel release], timeZoneLabel = nil;
     [prefsFilePath release], prefsFilePath = nil;
     [timeZoneName release], timeZoneName = nil;
     [clockFormatter release], clockFormatter = nil;

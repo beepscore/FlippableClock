@@ -33,8 +33,8 @@
 #pragma mark -
 #pragma mark initializers / destructors
 - (void)dealloc {
-    self.twentyFourHourSwitch = nil;
-    self.timeZonePicker = nil;
+    [twentyFourHourSwitch release], twentyFourHourSwitch = nil;
+    [timeZonePicker release], timeZonePicker = nil;
     [timeZoneNames release], timeZoneNames = nil;
     
     [super dealloc];

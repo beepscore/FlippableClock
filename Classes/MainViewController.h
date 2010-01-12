@@ -26,7 +26,7 @@
 
 #pragma mark -
 #pragma mark properties
-@property(nonatomic,retain)NSMutableDictionary *clockPrefs;
+@property(nonatomic,copy)NSMutableDictionary *clockPrefs;
 @property(nonatomic,retain)IBOutlet UILabel *timeLabel;
 @property(nonatomic,retain)IBOutlet UILabel *timeZoneLabel;
 
